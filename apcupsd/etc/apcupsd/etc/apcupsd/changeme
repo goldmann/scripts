@@ -2,14 +2,14 @@
 #
 # This shell script if placed in /etc/apcupsd
 # will be called by /etc/apcupsd/apccontrol when apcupsd
-# restores contact with the UPS (i.e. the serial connection is restored).
+# detects that the battery should be replaced.
 # We send an email message to root to notify him.
 #
 
-if [ -f /etc/apcupsd/email ]; then
-  . /etc/apcupsd/email
+if [ -f /etc/apcupsd/notify ]; then
+  . /etc/apcupsd/notify
 fi
 
-send_email "Communications with UPS restored"
+notify "Battery needs changing NOW" 1
 
 exit 0

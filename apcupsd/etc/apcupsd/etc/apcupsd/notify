@@ -1,0 +1,28 @@
+EMAIL_ADDRESS="EMAIL"
+EMAIL_SUBJECT="[UPS $HOSTNAME] "
+
+# SMS related configuration
+# http://bramka.gsmservice.pl
+#
+SMS_USERNAME="USERNAME"
+SMS_PASSWORD="PASSWORD"
+SMS_PHONE="48PHONE"
+
+function notify {
+  send_email "$1"
+
+  if [ "$2" = "1" ]; then
+    send_sms "$1"
+  fi
+}
+
+function send_email {
+  ( /sbin/apcaccess status ) | /bin/mail -s "$EMAIL_SUBJECT $1" $EMAIL_ADDRESS
+}
+
+function send_sms {
+  date=`date +"%d-%m-%Y %T"`
+  text=$(python -c "import urllib; print urllib.quote('''$date: $1''')")
+  curl "https://api.gsmservice.pl/send.php?login=$SMS_USERNAME&pass=$SMS_PASSWORD&recipient=$SMS_PHONE&text=$text&type=1" &> /dev/null
+}
+

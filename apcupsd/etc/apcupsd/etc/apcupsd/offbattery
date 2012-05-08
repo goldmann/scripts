@@ -6,10 +6,10 @@
 # We send an email message to root to notify him.
 #
 
-if [ -f /etc/apcupsd/email ]; then
-  . /etc/apcupsd/email
+if [ -f /etc/apcupsd/notify ]; then
+  . /etc/apcupsd/notify
 fi
 
-send_email "Power has returned"
+notify "Power has returned" 1
 
 exit 0
